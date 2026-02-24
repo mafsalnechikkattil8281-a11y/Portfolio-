@@ -50,6 +50,19 @@
 
     --whatsapp: 142 70% 45%;
     --whatsapp-foreground: 0 0% 100%;
+
+    --color-text-primary: hsl(var(--foreground));
+    --color-text-secondary: hsl(var(--muted-foreground));
+    --color-bg-primary: hsl(var(--background));
+    --color-border: hsl(var(--border));
+    --color-lime: 84 100% 59%;
+  }
+
+  .dark {
+    --color-text-primary: hsl(var(--foreground));
+    --color-text-secondary: hsl(var(--muted-foreground));
+    --color-bg-primary: hsl(var(--background));
+    --color-border: hsl(var(--border));
   }
 }
 
@@ -77,6 +90,45 @@
   .section-padding {
     @apply px-6 py-20 md:px-12 lg:px-24 lg:py-32;
   }
+
+  .glass-nav {
+    @apply bg-background/70 backdrop-blur-md border border-border/50;
+  }
+
+  .text-lime {
+    color: hsl(var(--color-lime));
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full transition-all duration-300 font-medium disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Featured Gallery Custom Styles */
+.featured-card {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Smooth scrolling */

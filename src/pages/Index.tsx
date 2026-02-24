@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import WorksSection from "@/components/WorksSection";
-import SkillsSection from "@/components/SkillsSection";
+import FeaturedWorks from "@/components/FeaturedWorks";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppFab from "@/components/WhatsAppFab";
@@ -14,7 +14,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <WorksSection />
-      <SkillsSection />
+      <FeaturedWorks />
       <ContactSection />
       <Footer />
       <WhatsAppFab />

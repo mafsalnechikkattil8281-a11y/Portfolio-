@@ -4,18 +4,18 @@ const AboutSection = () => {
   return (
     <section id="about" className="section-padding">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-primary font-body mb-3">
               About Me
             </p>
-            <h2 className="font-display text-5xl lg:text-6xl text-foreground mb-6">
+            <h2 className="font-display text-3xl xs:text-4xl sm:text-5xl lg:text-6xl text-foreground mb-6">
               CREATING VISUALS
               <br />
               THAT <span className="text-gradient">INSPIRE</span>
             </h2>
             <p className="text-muted-foreground font-body leading-relaxed mb-4">
-              I'm a visual content creator specializing in photography, videography, and post-production editing.
+              I'm <span className="text-foreground font-semibold">Afsal</span>, a visual content creator specializing in photography, videography, and post-production editing.
               With a keen eye for detail and a passion for storytelling, I transform moments into cinematic experiences.
             </p>
             <p className="text-muted-foreground font-body leading-relaxed">

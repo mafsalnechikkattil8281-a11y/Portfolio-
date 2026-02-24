@@ -1,24 +1,88 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import work1 from "@/assets/work-1.jpg";
-import work2 from "@/assets/work-2.jpg";
+import work1_1 from "@/assets/wedding-vid-1.jpg";
+import work1_2 from "@/assets/wedding-vid-2.jpg";
+import work2_1 from "@/assets/wedding-photo-1.png";
+import work2_2 from "@/assets/wedding-photo-2.png";
+import work2_3 from "@/assets/wedding-photo-3.png";
+import work2_4 from "@/assets/wedding-photo-4.png";
 import work3 from "@/assets/work-3.jpg";
 import work4 from "@/assets/work-4.jpg";
-import work5 from "@/assets/work-5.jpg";
-import work6 from "@/assets/work-6.jpg";
+
+// Travel Photography Images
+import trav1 from "@/assets/travel-1.jpeg";
+import trav2 from "@/assets/travel-2.jpeg";
+import trav3 from "@/assets/travel-3.jpeg";
+import trav4 from "@/assets/travel-4.jpeg";
+import trav5 from "@/assets/travel-5.jpeg";
+import trav6 from "@/assets/travel-6.jpeg";
+import trav7 from "@/assets/travel-7.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const WORKS = [
-  { src: work1, title: "Dramatic Portrait", category: "Photo", alt: "Cinematic portrait with dramatic studio lighting" },
-  { src: work2, title: "Golden Hour", category: "Photo", alt: "Golden hour sunset over mountain landscape" },
-  { src: work3, title: "Behind the Lens", category: "Video", alt: "Professional videography setup on film set" },
-  { src: work4, title: "Aerial Perspective", category: "Photo", alt: "Aerial drone shot of river through forest" },
-  { src: work5, title: "Product Elegance", category: "Photo", alt: "Luxury watch product photography on dark marble" },
-  { src: work6, title: "Urban Nights", category: "Editing", alt: "Night street photography with neon reflections" },
+  {
+    images: [work1_1, work1_2],
+    title: "Wedding Videography",
+    category: "Cinema",
+    alt: "Cinematic wedding film capture"
+  },
+  {
+    images: [work2_1, work2_2, work2_3, work2_4],
+    title: "Wedding Photography",
+    category: "Portrait",
+    alt: "Beautiful wedding day moments"
+  },
+  {
+    images: [trav1, trav2, trav3, trav4, trav5, trav6, trav7],
+    title: "Travel Photography",
+    category: "Exploring",
+    alt: "Travel storytelling through visuals"
+  },
+  { src: work4, title: "College Events", category: "Event", alt: "Capturing vibrant college event memories" },
 ];
+
+const WorkImage = ({ images, src, alt }: { images?: string[], src?: string, alt: string }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  const displaySrc = images ? images[currentIndex] : src;
+
+  return (
+    <div className="w-full h-full relative">
+      {images ? (
+        images.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={alt}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${idx === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            loading="lazy"
+          />
+        ))
+      ) : (
+        <img
+          src={displaySrc}
+          alt={alt}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+};
 
 const WorksSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -67,13 +131,8 @@ const WorksSection = () => {
               key={i}
               className="flex-shrink-0 w-[70vw] sm:w-[50vw] md:w-[35vw] lg:w-[28vw] group relative overflow-hidden rounded-lg"
             >
-              <div className="aspect-[3/4] overflow-hidden">
-                <img
-                  src={work.src}
-                  alt={work.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
-                />
+              <div className="aspect-[3/4] overflow-hidden bg-secondary/20">
+                <WorkImage images={work.images} src={work.src} alt={work.alt} />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                 <span className="text-xs uppercase tracking-widest text-primary font-body mb-1">

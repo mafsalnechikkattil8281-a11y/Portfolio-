@@ -15,7 +15,7 @@ const SkillsSection = () => {
           <p className="text-sm uppercase tracking-[0.3em] text-primary font-body mb-3">
             Expertise
           </p>
-          <h2 className="font-display text-5xl lg:text-6xl text-foreground">
+          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground">
             SKILLS & <span className="text-gradient">TOOLS</span>
           </h2>
         </div>
