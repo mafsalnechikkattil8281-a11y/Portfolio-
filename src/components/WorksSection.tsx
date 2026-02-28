@@ -139,7 +139,7 @@ const WorksSection = () => {
               className="flex-shrink-0 w-[70vw] sm:w-[50vw] md:w-[35vw] lg:w-[28vw] group relative overflow-hidden rounded-lg"
             >
               <div className="aspect-[3/4] overflow-hidden bg-secondary/20">
-                <WorkImage images={work.images} src={work.src} alt={work.alt} />
+                <WorkImage images={work.images} alt={work.alt} />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                 <span className="text-xs uppercase tracking-widest text-primary font-body mb-1">

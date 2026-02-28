@@ -1,4 +1,4 @@
-import landingBg from "@/assets/travel-1.jpeg";
+
 
 const HeroSection = () => {
   return (
@@ -6,16 +6,8 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-end overflow-hidden"
     >
-      {/* Background — rotated, blurred, faded */}
-      <div className="absolute inset-0 bg-background">
-        <img
-          src={landingBg}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-30 blur-[4px]"
-          style={{ transform: "rotate(-90deg) scale(1.8)" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
-      </div>
+      {/* Background */}
+      <div className="absolute inset-0 bg-background" />
 
       {/* Content */}
       <div className="relative z-10 text-right px-6 md:px-12 lg:px-24 max-w-4xl">
@@ -58,11 +50,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 animate-fade-in" style={{ animationDelay: "1.2s" }}>
-        <span className="text-xs uppercase tracking-widest text-muted-foreground font-body">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-primary to-transparent" />
-      </div>
     </section>
   );
 };

@@ -202,6 +202,7 @@ const FeaturedWorks = () => {
                                         loop
                                         muted
                                         playsInline
+                                        preload="metadata"
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
@@ -211,7 +212,7 @@ const FeaturedWorks = () => {
                                         className="w-full h-full object-cover"
                                     />
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
                                 <div className="absolute inset-0 flex flex-col justify-end p-6">
                                     <div className="flex items-center gap-2 mb-2">
