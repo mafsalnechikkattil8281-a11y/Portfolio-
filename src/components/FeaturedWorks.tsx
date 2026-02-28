@@ -290,10 +290,11 @@ const FeaturedWorks = () => {
 
                     {/* Back Arrow */}
                     <button
-                        className="absolute top-20 left-5 text-white/80 hover:text-white transition-colors z-[110] p-2"
-                        onClick={() => setActiveVideo(null)}
+                        className="absolute top-20 left-5 text-white/80 active:text-white transition-colors z-[1100] p-3"
+                        onClick={(e) => { e.stopPropagation(); setActiveVideo(null); }}
+                        onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); setActiveVideo(null); }}
                     >
-                        <ChevronLeft className="w-7 h-7" />
+                        <ChevronLeft className="w-8 h-8" />
                     </button>
 
                     <div
