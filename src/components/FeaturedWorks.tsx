@@ -52,24 +52,77 @@ const FEATURED_ITEMS: FeaturedItem[] = [
     },
 ];
 
+/** Shared card content — used in both mobile and desktop layouts */
+const CardContent = ({ item, onClick }: { item: FeaturedItem; onClick: () => void }) => (
+    <div
+        className="relative w-full h-full group cursor-pointer"
+        onClick={onClick}
+    >
+        {item.videoThumbnail ? (
+            <video
+                src={item.videoThumbnail}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+            />
+        ) : (
+            <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="w-full h-full object-cover"
+            />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-all duration-500" />
+
+        <div className="absolute inset-0 flex flex-col justify-end p-5">
+            <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                    {item.type === "reel" ? (
+                        <Play className="w-4 h-4 text-white fill-white" />
+                    ) : (
+                        <Instagram className="w-4 h-4 text-white" />
+                    )}
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">
+                    {item.type}
+                </span>
+            </div>
+            <h3 className="text-white font-display text-xl sm:text-2xl tracking-wide uppercase leading-tight">
+                {item.title}
+            </h3>
+        </div>
+    </div>
+);
+
 const FeaturedWorks = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const cardsContainerRef = useRef<HTMLUListElement>(null);
     const dragProxyRef = useRef<HTMLDivElement>(null);
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
 
+    // Detect mobile vs desktop
     useEffect(() => {
+        const mql = window.matchMedia("(max-width: 767px)");
+        const update = () => setIsMobile(mql.matches);
+        update();
+        mql.addEventListener("change", update);
+        return () => mql.removeEventListener("change", update);
+    }, []);
+
+    // GSAP slider — desktop only
+    useEffect(() => {
+        if (isMobile) return;
         if (!sectionRef.current || !cardsContainerRef.current || !dragProxyRef.current) return;
 
         const cards = gsap.utils.toArray<HTMLLIElement>(".featured-card");
-        const isMobile = window.innerWidth < 768;
-        const spacing = isMobile ? 0.2 : 0.15;
+        const spacing = 0.15;
         const snapTime = gsap.utils.snap(spacing);
 
-        // Proxy object to hold offset
         const playhead = { offset: 0 };
 
-        // Set initial state
         gsap.set(cards, { xPercent: 400, opacity: 0, scale: 0 });
 
         const animateFunc = (element: HTMLLIElement) => {
@@ -103,14 +156,12 @@ const FeaturedWorks = () => {
             scrub.invalidate().restart();
         };
 
-        // Click handlers for buttons
         const nextHandler = () => scrollToOffset(playhead.offset + spacing);
         const prevHandler = () => scrollToOffset(playhead.offset - spacing);
 
         document.querySelector(".feat-next")?.addEventListener("click", nextHandler);
         document.querySelector(".feat-prev")?.addEventListener("click", prevHandler);
 
-        // Draggable integration
         const draggable = Draggable.create(dragProxyRef.current, {
             type: "x",
             trigger: cardsContainerRef.current,
@@ -121,8 +172,7 @@ const FeaturedWorks = () => {
                 this.startOffset = playhead.offset;
             },
             onDrag() {
-                const sensitivity = isMobile ? 0.0015 : 0.001;
-                playhead.offset = this.startOffset + (this.startX - this.x) * sensitivity;
+                playhead.offset = this.startOffset + (this.startX - this.x) * 0.001;
                 seamlessLoop.time(wrapTime(playhead.offset));
             },
             onDragEnd() {
@@ -130,7 +180,6 @@ const FeaturedWorks = () => {
             }
         })[0];
 
-        // Cleanup
         return () => {
             draggable.kill();
             seamlessLoop.kill();
@@ -138,7 +187,7 @@ const FeaturedWorks = () => {
             document.querySelector(".feat-next")?.removeEventListener("click", nextHandler);
             document.querySelector(".feat-prev")?.removeEventListener("click", prevHandler);
         };
-    }, []);
+    }, [isMobile]);
 
     function buildSeamlessLoop(items: HTMLLIElement[], spacing: number, animateFunc: (el: HTMLLIElement) => gsap.core.Timeline) {
         const overlap = Math.ceil(1 / spacing);
@@ -180,7 +229,8 @@ const FeaturedWorks = () => {
     }
 
     return (
-        <section id="featured" ref={sectionRef} className="h-screen overflow-hidden bg-background relative flex flex-col justify-center">
+        <section id="featured" ref={sectionRef} className="min-h-screen overflow-hidden bg-background relative flex flex-col justify-center">
+            {/* Header */}
             <div className="absolute top-12 left-0 w-full px-6 md:px-12 lg:px-24 z-20">
                 <p className="text-[10px] xs:text-sm uppercase tracking-[0.3em] text-primary font-body mb-3">
                     Cinematic Gallery
@@ -190,65 +240,56 @@ const FeaturedWorks = () => {
                 </h2>
             </div>
 
-            <div className="relative flex-grow flex items-center justify-center pt-20 xs:pt-12">
-                <ul ref={cardsContainerRef} className="relative w-[90vw] max-w-[280px] xs:max-w-72 h-[380px] xs:h-[450px] sm:h-[480px] list-none p-0 m-0">
-                    {FEATURED_ITEMS.map((item, idx) => (
-                        <li
-                            key={idx}
-                            className="featured-card absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-card"
-                            onClick={() => setActiveVideo(item.url)}
-                        >
-                            <div className="relative w-full h-full group">
-                                {item.videoThumbnail ? (
-                                    <video
-                                        src={item.videoThumbnail}
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <img
-                                        src={item.thumbnail}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-all duration-500" />
-
-                                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                                            {item.type === "reel" ? (
-                                                <Play className="w-4 h-4 text-white fill-white" />
-                                            ) : (
-                                                <Instagram className="w-4 h-4 text-white" />
-                                            )}
-                                        </div>
-                                        <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">
-                                            {item.type}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-white font-display text-2xl tracking-wide uppercase leading-tight">
-                                        {item.title}
-                                    </h3>
+            {/* ─── MOBILE: Horizontal touch-scroll ─── */}
+            {isMobile && (
+                <div className="relative flex-grow flex items-center pt-24 pb-6">
+                    <div className="featured-scroll-container">
+                        {FEATURED_ITEMS.map((item, idx) => (
+                            <div key={idx} className="featured-scroll-card">
+                                <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-card">
+                                    <CardContent item={item} onClick={() => setActiveVideo(item.url)} />
                                 </div>
                             </div>
-                        </li>
-                    ))}
-                </ul>
-                <div ref={dragProxyRef} className="invisible absolute top-0 left-0" />
-            </div>
+                        ))}
+                    </div>
 
-            <div className="absolute bottom-10 xs:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
-                <button className="feat-prev w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
-                    <ChevronLeft className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
-                </button>
-                <button className="feat-next w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
-                    <ChevronRight className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
-                </button>
-            </div>
+                    {/* Scroll indicator dots */}
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                        {FEATURED_ITEMS.map((_, idx) => (
+                            <div key={idx} className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* ─── DESKTOP: GSAP infinite slider ─── */}
+            {!isMobile && (
+                <>
+                    <div className="relative flex-grow flex items-center justify-center pt-20 xs:pt-12">
+                        <ul ref={cardsContainerRef} className="relative w-[90vw] max-w-72 h-[480px] list-none p-0 m-0">
+                            {FEATURED_ITEMS.map((item, idx) => (
+                                <li
+                                    key={idx}
+                                    className="featured-card absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-card"
+                                    onClick={() => setActiveVideo(item.url)}
+                                >
+                                    <CardContent item={item} onClick={() => setActiveVideo(item.url)} />
+                                </li>
+                            ))}
+                        </ul>
+                        <div ref={dragProxyRef} className="invisible absolute top-0 left-0" />
+                    </div>
+
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
+                        <button className="feat-prev w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
+                            <ChevronLeft className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
+                        </button>
+                        <button className="feat-next w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
+                            <ChevronRight className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
+                        </button>
+                    </div>
+                </>
+            )}
 
             {/* Video Modal */}
             {activeVideo && (

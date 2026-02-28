@@ -32,18 +32,18 @@ const HeroSection = () => {
           Hi, I'm <span className="text-foreground font-semibold">Afsal</span>. I craft cinematic visuals that capture emotion, tell stories, and leave lasting impressions.
         </p>
         <div
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-end opacity-0 animate-fade-up"
+          className="mt-6 sm:mt-10 flex flex-row gap-3 sm:gap-4 justify-center sm:justify-end opacity-0 animate-fade-up"
           style={{ animationDelay: "0.8s" }}
         >
           <a
             href="#works"
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-body text-xs sm:text-sm font-semibold uppercase tracking-wider hover:opacity-90 transition-opacity"
+            className="bg-primary text-primary-foreground px-4 py-2 sm:px-6 sm:py-3 rounded-full font-body text-[10px] sm:text-sm font-semibold uppercase tracking-wider hover:opacity-90 transition-opacity text-center"
           >
             View Works
           </a>
           <a
             href="#contact"
-            className="border border-foreground/30 text-foreground px-6 py-3 rounded-full font-body text-xs sm:text-sm font-semibold uppercase tracking-wider hover:border-primary hover:text-primary transition-colors"
+            className="border border-foreground/30 text-foreground px-4 py-2 sm:px-6 sm:py-3 rounded-full font-body text-[10px] sm:text-sm font-semibold uppercase tracking-wider hover:border-primary hover:text-primary transition-colors text-center"
           >
             Get in Touch
           </a>

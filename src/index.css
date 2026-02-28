@@ -131,6 +131,29 @@
   backface-visibility: hidden;
 }
 
+/* Mobile horizontal touch-scroll */
+.featured-scroll-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 calc(50vw - 120px);
+  width: 100%;
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;        /* IE/Edge */
+}
+.featured-scroll-container::-webkit-scrollbar {
+  display: none;                     /* Chrome/Safari */
+}
+
+.featured-scroll-card {
+  flex: 0 0 240px;
+  height: 380px;
+  scroll-snap-align: center;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
