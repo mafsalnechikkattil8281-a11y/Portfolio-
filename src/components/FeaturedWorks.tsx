@@ -272,7 +272,7 @@ const FeaturedWorks = () => {
             {/* Video Modal */}
             {activeVideo && (
                 <div
-                    className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 animate-fade-in"
+                    className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 animate-fade-in"
                     onClick={() => setActiveVideo(null)}
                     onTouchStart={(e) => {
                         const touch = e.touches[0];
