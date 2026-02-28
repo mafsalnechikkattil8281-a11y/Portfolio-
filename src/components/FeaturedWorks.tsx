@@ -107,6 +107,8 @@ const FeaturedWorks = () => {
         document.querySelector(".feat-next")?.addEventListener("click", nextHandler);
         document.querySelector(".feat-prev")?.addEventListener("click", prevHandler);
 
+        const isDragging = { value: false };
+
         const draggable = Draggable.create(dragProxyRef.current, {
             type: "x",
             trigger: cardsContainerRef.current,
@@ -115,9 +117,11 @@ const FeaturedWorks = () => {
             dragClickables: true,
             minimumMovement: 5,
             onPress() {
+                isDragging.value = false;
                 this.startOffset = playhead.offset;
             },
             onDrag() {
+                isDragging.value = true;
                 const sensitivity = isMobile ? 0.002 : 0.001;
                 playhead.offset = this.startOffset + (this.startX - this.x) * sensitivity;
                 seamlessLoop.time(wrapTime(playhead.offset));
@@ -127,12 +131,24 @@ const FeaturedWorks = () => {
             }
         })[0];
 
+        // Handle taps on cards (only when not dragging)
+        const cardClickHandler = (e: Event) => {
+            if (isDragging.value) return;
+            const card = (e.currentTarget as HTMLElement);
+            const url = card.getAttribute("data-url");
+            if (url) {
+                setActiveVideo(url);
+            }
+        };
+        cards.forEach(card => card.addEventListener("click", cardClickHandler));
+
         return () => {
             draggable.kill();
             seamlessLoop.kill();
             scrub.kill();
             document.querySelector(".feat-next")?.removeEventListener("click", nextHandler);
             document.querySelector(".feat-prev")?.removeEventListener("click", prevHandler);
+            cards.forEach(card => card.removeEventListener("click", cardClickHandler));
         };
     }, []);
 
@@ -192,7 +208,7 @@ const FeaturedWorks = () => {
                         <li
                             key={idx}
                             className="featured-card absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-card"
-                            onClick={() => setActiveVideo(item.url)}
+                            data-url={item.url}
                         >
                             <div className="relative w-full h-full group">
                                 {item.videoThumbnail ? (
