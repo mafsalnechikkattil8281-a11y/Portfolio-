@@ -286,19 +286,18 @@ const FeaturedWorks = () => {
                         }
                     }}
                 >
-                    <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" />
+                    <div className="absolute inset-0 bg-black/85 backdrop-blur-xl" />
 
-                    {/* Back Button */}
+                    {/* Back Arrow */}
                     <button
-                        className="absolute top-5 left-5 flex items-center gap-2 text-white/70 hover:text-white transition-colors z-[110] px-3 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
+                        className="absolute top-5 left-5 text-white/80 hover:text-white transition-colors z-[110] p-2"
                         onClick={() => setActiveVideo(null)}
                     >
-                        <ChevronLeft className="w-5 h-5" />
-                        <span className="text-sm font-medium">Back</span>
+                        <ChevronLeft className="w-7 h-7" />
                     </button>
 
                     <div
-                        className="relative z-[110] w-full max-w-[400px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+                        className="relative z-[110] w-full max-w-[280px] sm:max-w-[350px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-white/10"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <iframe
