@@ -110,14 +110,15 @@ const FeaturedWorks = () => {
         const draggable = Draggable.create(dragProxyRef.current, {
             type: "x",
             trigger: cardsContainerRef.current,
-            allowNativeTouchScrolling: true,
+            allowNativeTouchScrolling: false,
             lockAxis: true,
             dragClickables: true,
+            minimumMovement: 5,
             onPress() {
                 this.startOffset = playhead.offset;
             },
             onDrag() {
-                const sensitivity = isMobile ? 0.0015 : 0.001;
+                const sensitivity = isMobile ? 0.002 : 0.001;
                 playhead.offset = this.startOffset + (this.startX - this.x) * sensitivity;
                 seamlessLoop.time(wrapTime(playhead.offset));
             },
@@ -186,7 +187,7 @@ const FeaturedWorks = () => {
             </div>
 
             <div className="relative flex-grow flex items-center justify-center pt-20 xs:pt-12">
-                <ul ref={cardsContainerRef} className="relative w-[75vw] max-w-[240px] xs:max-w-[260px] sm:max-w-72 h-[300px] xs:h-[380px] sm:h-[480px] list-none p-0 m-0">
+                <ul ref={cardsContainerRef} className="relative w-[75vw] max-w-[240px] xs:max-w-[260px] sm:max-w-72 h-[360px] xs:h-[420px] sm:h-[480px] list-none p-0 m-0">
                     {FEATURED_ITEMS.map((item, idx) => (
                         <li
                             key={idx}
