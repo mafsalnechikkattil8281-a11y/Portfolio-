@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { Draggable } from "gsap/all";
 import { Instagram, Play, ChevronLeft, ChevronRight } from "lucide-react";
@@ -192,85 +193,88 @@ const FeaturedWorks = () => {
     }
 
     return (
-        <section id="featured" ref={sectionRef} className="h-screen overflow-hidden bg-background relative flex flex-col justify-center">
-            <div className="absolute top-12 left-0 w-full px-6 md:px-12 lg:px-24 z-20">
-                <p className="text-[10px] xs:text-sm uppercase tracking-[0.3em] text-primary font-body mb-3">
-                    Cinematic Gallery
-                </p>
-                <h2 className="font-display text-4xl xs:text-5xl lg:text-6xl text-foreground whitespace-nowrap">
-                    FEATURED <span className="text-gradient">WORKS</span>
-                </h2>
-            </div>
+        <>
+            <section id="featured" ref={sectionRef} className="h-screen overflow-hidden bg-background relative flex flex-col justify-center">
+                <div className="absolute top-12 left-0 w-full px-6 md:px-12 lg:px-24 z-20">
+                    <p className="text-[10px] xs:text-sm uppercase tracking-[0.3em] text-primary font-body mb-3">
+                        Cinematic Gallery
+                    </p>
+                    <h2 className="font-display text-4xl xs:text-5xl lg:text-6xl text-foreground whitespace-nowrap">
+                        FEATURED <span className="text-gradient">WORKS</span>
+                    </h2>
+                </div>
 
-            <div className="relative flex-grow flex items-center justify-center pt-20 xs:pt-12">
-                <ul ref={cardsContainerRef} className="relative w-[75vw] max-w-[240px] xs:max-w-[260px] sm:max-w-72 h-[360px] xs:h-[420px] sm:h-[480px] list-none p-0 m-0">
-                    {FEATURED_ITEMS.map((item, idx) => (
-                        <li
-                            key={idx}
-                            className="featured-card absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-card"
-                            data-url={item.url}
-                        >
-                            <div className="relative w-full h-full group">
-                                {item.videoThumbnail ? (
-                                    <video
-                                        src={item.videoThumbnail}
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                        preload="metadata"
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <img
-                                        src={item.thumbnail}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative flex-grow flex items-center justify-center pt-20 xs:pt-12">
+                    <ul ref={cardsContainerRef} className="relative w-[75vw] max-w-[240px] xs:max-w-[260px] sm:max-w-72 h-[360px] xs:h-[420px] sm:h-[480px] list-none p-0 m-0">
+                        {FEATURED_ITEMS.map((item, idx) => (
+                            <li
+                                key={idx}
+                                className="featured-card absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-card"
+                                data-url={item.url}
+                            >
+                                <div className="relative w-full h-full group">
+                                    {item.videoThumbnail ? (
+                                        <video
+                                            src={item.videoThumbnail}
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            preload="metadata"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <img
+                                            src={item.thumbnail}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <button
-                                            className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 pointer-events-auto hover:bg-white/30 transition-colors"
-                                            onPointerUp={(e) => {
-                                                e.stopPropagation();
-                                                setActiveVideo(item.url);
-                                            }}
-                                        >
-                                            {item.type === "reel" ? (
-                                                <Play className="w-4 h-4 text-white fill-white" />
-                                            ) : (
-                                                <Instagram className="w-4 h-4 text-white" />
-                                            )}
-                                        </button>
-                                        <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">
-                                            {item.type}
-                                        </span>
+                                    <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <button
+                                                className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 pointer-events-auto hover:bg-white/30 transition-colors"
+                                                onPointerUp={(e) => {
+                                                    e.stopPropagation();
+                                                    setActiveVideo(item.url);
+                                                }}
+                                            >
+                                                {item.type === "reel" ? (
+                                                    <Play className="w-4 h-4 text-white fill-white" />
+                                                ) : (
+                                                    <Instagram className="w-4 h-4 text-white" />
+                                                )}
+                                            </button>
+                                            <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">
+                                                {item.type}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-white font-display text-2xl tracking-wide uppercase leading-tight">
+                                            {item.title}
+                                        </h3>
                                     </div>
-                                    <h3 className="text-white font-display text-2xl tracking-wide uppercase leading-tight">
-                                        {item.title}
-                                    </h3>
                                 </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                <div ref={dragProxyRef} className="invisible absolute top-0 left-0" />
-            </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <div ref={dragProxyRef} className="invisible absolute top-0 left-0" />
+                </div>
 
-            <div className="absolute bottom-4 xs:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
-                <button className="feat-prev w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
-                    <ChevronLeft className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
-                </button>
-                <button className="feat-next w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
-                    <ChevronRight className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
-                </button>
-            </div>
+                <div className="absolute bottom-4 xs:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
+                    <button className="feat-prev w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
+                        <ChevronLeft className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
+                    </button>
+                    <button className="feat-next w-10 h-10 xs:w-12 xs:h-12 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary/10 hover:border-primary transition-all duration-300 group">
+                        <ChevronRight className="w-5 h-5 xs:w-6 xs:h-6 text-foreground group-hover:text-primary transition-colors" />
+                    </button>
+                </div>
 
-            {/* Video Modal */}
-            {activeVideo && (
+            </section>
+
+            {/* Video Modal — rendered via portal outside GSAP section */}
+            {activeVideo && createPortal(
                 <div
                     className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 animate-fade-in"
                     onClick={() => setActiveVideo(null)}
@@ -310,9 +314,10 @@ const FeaturedWorks = () => {
                             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                         ></iframe>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
-        </section>
+        </>
     );
 };
 
