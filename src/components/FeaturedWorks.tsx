@@ -278,17 +278,6 @@ const FeaturedWorks = () => {
                 <div
                     className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 animate-fade-in"
                     onClick={() => setActiveVideo(null)}
-                    onTouchStart={(e) => {
-                        const touch = e.touches[0];
-                        (e.currentTarget as HTMLElement).dataset.touchStartX = String(touch.clientX);
-                    }}
-                    onTouchEnd={(e) => {
-                        const startX = Number((e.currentTarget as HTMLElement).dataset.touchStartX || 0);
-                        const endX = e.changedTouches[0].clientX;
-                        if (endX - startX > 80) {
-                            setActiveVideo(null);
-                        }
-                    }}
                 >
                     <div className="absolute inset-0 bg-black/85 backdrop-blur-xl" />
 
@@ -296,7 +285,6 @@ const FeaturedWorks = () => {
                     <button
                         className="absolute top-20 left-5 text-white/80 active:text-white transition-colors z-[1100] p-3"
                         onClick={(e) => { e.stopPropagation(); setActiveVideo(null); }}
-                        onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); setActiveVideo(null); }}
                     >
                         <ChevronLeft className="w-8 h-8" />
                     </button>
