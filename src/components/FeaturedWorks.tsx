@@ -230,7 +230,18 @@ const FeaturedWorks = () => {
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                                {/* Center Play Button */}
+                                <button
+                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 hover:bg-white/30 hover:scale-110 transition-all duration-300 z-10"
+                                    onPointerUp={(e) => {
+                                        e.stopPropagation();
+                                        setActiveVideo(item.url);
+                                    }}
+                                >
+                                    <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+                                </button>
+
+                                <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
                                             {item.type === "reel" ? (
