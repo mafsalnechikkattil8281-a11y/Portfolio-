@@ -8,8 +8,10 @@ import work2_1 from "@/assets/wedding-photo-1.png";
 import work2_2 from "@/assets/wedding-photo-2.png";
 import work2_3 from "@/assets/wedding-photo-3.png";
 import work2_4 from "@/assets/wedding-photo-4.png";
-import work3 from "@/assets/work-3.jpg";
-import work4 from "@/assets/work-4.jpg";
+
+// College Event Images
+import event9 from "@/assets/IMG_2946.JPG.jpeg";
+import event10 from "@/assets/IMG_2947.JPG.jpeg";
 
 // Travel Photography Images
 import trav1 from "@/assets/travel-1.jpeg";
@@ -41,7 +43,12 @@ const WORKS = [
     category: "Exploring",
     alt: "Travel storytelling through visuals"
   },
-  { src: work4, title: "College Events", category: "Event", alt: "Capturing vibrant college event memories" },
+  {
+    images: [event9, event10],
+    title: "College Events",
+    category: "Event",
+    alt: "Capturing vibrant college event memories"
+  },
 ];
 
 const WorkImage = ({ images, src, alt }: { images?: string[], src?: string, alt: string }) => {

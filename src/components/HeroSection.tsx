@@ -1,4 +1,4 @@
-import landingBg from "@/assets/landing.jpg";
+import landingBg from "@/assets/travel-1.jpeg";
 
 const HeroSection = () => {
   return (
@@ -6,8 +6,16 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-end overflow-hidden"
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-background" />
+      {/* Background — rotated, blurred, faded */}
+      <div className="absolute inset-0 bg-background">
+        <img
+          src={landingBg}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-30 blur-[4px]"
+          style={{ transform: "rotate(-90deg) scale(1.8)" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 text-right px-6 md:px-12 lg:px-24 max-w-4xl">
