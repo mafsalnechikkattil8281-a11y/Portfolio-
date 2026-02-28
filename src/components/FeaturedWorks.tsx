@@ -230,26 +230,21 @@ const FeaturedWorks = () => {
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                {/* Center Play Button */}
-                                <button
-                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 hover:bg-white/30 hover:scale-110 transition-all duration-300 z-10"
-                                    onPointerUp={(e) => {
-                                        e.stopPropagation();
-                                        setActiveVideo(item.url);
-                                    }}
-                                >
-                                    <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-                                </button>
-
                                 <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                                        <button
+                                            className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 pointer-events-auto hover:bg-white/30 transition-colors"
+                                            onPointerUp={(e) => {
+                                                e.stopPropagation();
+                                                setActiveVideo(item.url);
+                                            }}
+                                        >
                                             {item.type === "reel" ? (
                                                 <Play className="w-4 h-4 text-white fill-white" />
                                             ) : (
                                                 <Instagram className="w-4 h-4 text-white" />
                                             )}
-                                        </div>
+                                        </button>
                                         <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">
                                             {item.type}
                                         </span>
@@ -279,13 +274,27 @@ const FeaturedWorks = () => {
                 <div
                     className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 animate-fade-in"
                     onClick={() => setActiveVideo(null)}
+                    onTouchStart={(e) => {
+                        const touch = e.touches[0];
+                        (e.currentTarget as HTMLElement).dataset.touchStartX = String(touch.clientX);
+                    }}
+                    onTouchEnd={(e) => {
+                        const startX = Number((e.currentTarget as HTMLElement).dataset.touchStartX || 0);
+                        const endX = e.changedTouches[0].clientX;
+                        if (endX - startX > 80) {
+                            setActiveVideo(null);
+                        }
+                    }}
                 >
                     <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" />
+
+                    {/* Back Button */}
                     <button
-                        className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
+                        className="absolute top-5 left-5 flex items-center gap-2 text-white/70 hover:text-white transition-colors z-[110] px-3 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
                         onClick={() => setActiveVideo(null)}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                        <ChevronLeft className="w-5 h-5" />
+                        <span className="text-sm font-medium">Back</span>
                     </button>
 
                     <div
